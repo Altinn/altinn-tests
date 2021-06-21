@@ -1,0 +1,3 @@
+# Altinn 2 Cypress tests
+
+...
