@@ -1,2 +1,2 @@
 # altinn2-tests
-Tests for the Altinn 2 solution
+Tests for the Altinn 2 solution.
