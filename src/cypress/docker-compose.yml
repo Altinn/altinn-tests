@@ -1,0 +1,29 @@
+version: '3.2'
+
+# run Cypress tests and exit with command
+#   docker-compose up --exit-code-from cypress
+services:
+  cypress:
+    image: 'cypress/included:6.6.0'
+    environment:
+      - CYPRESS_environment=at23
+    working_dir: /AutomatedportalTest
+    volumes:
+      - ./:/AutomatedportalTest
+    command: '--spec /AutomatedportalTest/src/integration/pdf/pdf.js -b chrome'
+  cypress2:
+    image: 'cypress/included:6.6.0'
+    environment:
+      - CYPRESS_environment=at23
+    working_dir: /AutomatedportalTest
+    volumes:
+      - ./:/AutomatedportalTest
+    command: '--spec /AutomatedportalTest/src/integration/login/*.js -b chrome'
+  cypress3:
+    image: 'cypress/included:6.6.0'
+    environment:
+      - CYPRESS_environment=at23
+    working_dir: /AutomatedportalTest
+    volumes:
+      - ./:/AutomatedportalTest
+    command: '--spec "/AutomatedportalTest/src/integration/profile/*.js,/AutomatedportalTest/src/integration/services/*.js" -b chrome'

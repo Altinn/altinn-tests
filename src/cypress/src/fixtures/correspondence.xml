@@ -1,0 +1,27 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.altinn.no/services/ServiceEngine/Correspondence/2009/10" xmlns:ns1="http://schemas.altinn.no/services/ServiceEngine/Correspondence/2010/10" xmlns:ns2="http://www.altinn.no/services/ServiceEngine/ReporteeElementList/2010/10" xmlns:ns3="http://schemas.altinn.no/services/ServiceEngine/Correspondence/2009/10" xmlns:ns4="http://schemas.altinn.no/services/ServiceEngine/Notification/2009/10">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:InsertCorrespondenceBasicV2>
+         <ns:systemUserName></ns:systemUserName>
+         <ns:systemPassword></ns:systemPassword>
+         <ns:SystemUserCode></ns:SystemUserCode>
+         <ns:ExternalShipmentReference></ns:ExternalShipmentReference>
+         <ns:Correspondence>
+            <ns1:ServiceCode></ns1:ServiceCode>
+            <ns1:ServiceEdition></ns1:ServiceEdition>
+            <ns1:Reportee></ns1:Reportee>
+            <ns1:Content>
+               <ns1:LanguageCode>1033</ns1:LanguageCode>
+               <ns1:MessageTitle>Correspondence  test </ns1:MessageTitle>
+               <ns1:MessageSummary>Du har fått tilsendt en melding. </ns1:MessageSummary>
+               <ns1:MessageBody>Åpne meldingen ved å trykke på linken under.</ns1:MessageBody>               
+               <ns1:CustomMessageData>Correspondence</ns1:CustomMessageData>
+            </ns1:Content>
+            <ns1:VisibleDateTime>2021-01-01T16:17:00.000Z</ns1:VisibleDateTime>
+            <ns1:AllowSystemDeleteDateTime>2022-09-19T20:13:00.000Z</ns1:AllowSystemDeleteDateTime>
+            <ns1:DueDateTime>2022-10-20T13:15:05.000Z</ns1:DueDateTime>            
+            <ns1:AllowForwarding>1</ns1:AllowForwarding>
+         </ns:Correspondence>
+      </ns:InsertCorrespondenceBasicV2>
+   </soapenv:Body>
+</soapenv:Envelope>

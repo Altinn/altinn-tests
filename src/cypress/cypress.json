@@ -1,0 +1,23 @@
+{
+  "$schema": "https://on.cypress.io/cypress.schema.json",
+  "env": {},
+  "video": false,
+  "fixturesFolder": "src/fixtures",
+  "integrationFolder": "src/integration",
+  "supportFile": "src/support/index.js",
+  "pluginsFile": "src/plugins/index.js",
+  "downloadsFolder": "downloads",
+  "screenshotOnRunFailure": true,
+  "screenshotsFolder": "screenshots",
+  "trashAssetsBeforeRuns": true,
+  "videosFolder": "videos",
+  "viewportHeight": 768,
+  "viewportWidth": 1536,
+  "requestTimeout": 10000,
+  "defaultCommandTimeout": 8000,
+  "chromeWebSecurity": false,
+  "reporter": "junit",
+  "reporterOptions": {
+    "mochaFile": "reports/result-[hash].xml"
+  }
+}

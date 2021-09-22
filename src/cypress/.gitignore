@@ -1,0 +1,27 @@
+#vscode settings
+.vscode/
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# dotenv environment variables file
+.env
+
+# Screenshots and video
+screenshots/
+videos/
+
+# Junit xml reports
+reports/
+
+# Downloads
+downloads/
+
+#Test data
+data/
