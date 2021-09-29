@@ -24,4 +24,5 @@ reports/
 downloads/
 
 #Test data
-data/
+*/data/*
+!*/data/sample.env.json
