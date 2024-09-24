@@ -6,7 +6,8 @@ import { SharedArray } from 'k6/data';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.2/index.js';
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 import {generateToken} from './token-generator.js';
-import { abort, fail } from 'k6';
+import { fail } from 'k6';
+import exec from 'k6/execution';
 
 const taxXml = open('tax.xml', 'b');
 
@@ -125,8 +126,6 @@ export function create_instance(data, id) {
   };
 
   var request_body = JSON.stringify(instance)
-  console.log(endPoint);
-  console.log(params);
   console.log(request_body);
   var resp = http.post(endPoint, request_body, params);
   console.log(endPoint);
@@ -135,7 +134,7 @@ export function create_instance(data, id) {
       'instance generation is success': (r) => r.status === 201,
     })
   ) {
-      fail('status code was *not* 201');
+      exec.test.abort('status code was *not* 201');
   }
   return resp;
 }
