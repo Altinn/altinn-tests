@@ -197,9 +197,16 @@ export function handleSummary2(data) {
   };
 }
 
+export function my_summary(data) {
+  var lines = [];
+  lines.push("sjekker egen stout");
+  lines.push("funker det?");
+  return lines.join('\n');
+}
+
 export function handleSummary(data) {
   return {
-    //'stdout': textSummary(data, { indent: ' ', enableColors: true }),
+    'stdout': my_summary(data, { indent: ' ', enableColors: true }),
     'stdout.txt': textSummary(data, { indent: ' ', enableColors: true }),
     'summary.json': JSON.stringify(data), //the default data object
     "summary.html": htmlReport(data),
