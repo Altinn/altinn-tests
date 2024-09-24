@@ -51,7 +51,6 @@ export function setup() {
   };
   
   var token = generateToken(tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
-  token = token.body;
   data.idKeys.push({
       partyId: data.partyId, 
       userId: data.userId,
@@ -75,31 +74,30 @@ export default function(data) {
 }
 
 export function submit_tax(data, id) {
-  http.get('https://test.k6.io');
-  // group("Submit tax report", function () {
-  //     // 1. Create instance
-  //   var instance_resp = create_instance(data, id);
-  //   if (instance_resp.status != 201) return; 
+  group("Submit tax report", function () {
+      // 1. Create instance
+    var instance_resp = create_instance(data, id);
+    if (instance_resp.status != 201) return; 
 
-  //   // 2. Uplod tax report
-  //   var instance = instance_resp.json();
-  //   var upload_resp = upload_data(data, instance, id);
-  //   if (upload_resp.status != 201) return; 
+    // 2. Uplod tax report
+    var instance = instance_resp.json();
+    var upload_resp = upload_data(data, instance, id);
+    if (upload_resp.status != 201) return; 
 
-  //   // 3 & 4. Trigger callback and confirm
-  //   var cb_c_resp = trigger_callback_and_confirm(data, instance, id);
-  //   if (cb_c_resp.status != 200) return;
-  //   cb_c_resp = trigger_callback_and_confirm(data, instance, id);
-  //   if (cb_c_resp.status != 200) return;
+    // 3 & 4. Trigger callback and confirm
+    var cb_c_resp = trigger_callback_and_confirm(data, instance, id);
+    if (cb_c_resp.status != 200) return;
+    cb_c_resp = trigger_callback_and_confirm(data, instance, id);
+    if (cb_c_resp.status != 200) return;
 
-  //   // 5. Get receipt id
-  //   var receipt_id_resp = get_receipt_id(data, instance, id);
-  //   if (receipt_id_resp.status != 200) return;
+    // 5. Get receipt id
+    var receipt_id_resp = get_receipt_id(data, instance, id);
+    if (receipt_id_resp.status != 200) return;
 
-  //   // 6. Get receipt
-  //   var receipt_element = receipt_id_resp.json().data.find(x => x.dataType === "Skattemeldingsapp_v2")
-  //   var receipt_resp = get_receipt(data, instance, id, receipt_element.id)
-  // });
+    // 6. Get receipt
+    var receipt_element = receipt_id_resp.json().data.find(x => x.dataType === "Skattemeldingsapp_v2")
+    var receipt_resp = get_receipt(data, instance, id, receipt_element.id)
+  });
   
 }
 
@@ -113,8 +111,8 @@ export function create_instance(data, id) {
       DataValues: { inntektsaar: "2021" }
     };
 
-  console.log(data.searchUrlYt);
-  console.log(data.basePath);
+  console.info(data.searchUrlYt);
+  console.info(data.basePath);
     
   var endPoint = data.searchUrlYt + data.basePath + "/instances";
   var params = {
