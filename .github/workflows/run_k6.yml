@@ -17,7 +17,8 @@ jobs:
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1  
         with: 
-          path: performance-tests/test/src/test.js 
+          path: performance-tests/test/src/test.js
+          flags: --http-debug 
         env:
           K6_WEB_DASHBOARD: true
           K6_WEB_DASHBOARD_EXPORT: html-report.html
