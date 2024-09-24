@@ -1,0 +1,45 @@
+name: k6 Load Test
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+      - name: Run local k6 test
+        uses: grafana/run-k6-action@v1  
+        with: 
+          path: performance-tests/test/src/test.js 
+        env:
+          K6_WEB_DASHBOARD: true
+          K6_WEB_DASHBOARD_EXPORT: html-report.html
+          YTENVIRONMENT: ${{ secrets.YTENVIRONMENT }}
+          tokengenuser: ${{ secrets.TOKENGENUSER }}
+          tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
+          userid: ${{ secrets.USERID }}
+          partyid: ${{ secrets.PARTYID }}
+          ssn: ${{ secrets.SNN }}
+          serviceowner: ${{ secrets.OWNER }}
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: summary-json
+          path: summary.json
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: summary-html
+          path: summary.html
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report
+          path: html-report.html
