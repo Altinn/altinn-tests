@@ -32,8 +32,8 @@ jobs:
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
-          name: summary-json
-          path: summary.json
+          name: summary-text
+          path: stdout.txt
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
