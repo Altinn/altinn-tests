@@ -13,7 +13,7 @@ const taxXml = open('tax.xml', 'b');
 export const options = {
   summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(95)', 'p(99)', 'p(99.5)', 'p(99.9)', 'count'],
   thresholds: {
-    //http_req_failed: ['rate<0.01'],
+    http_req_failed: ['rate<0.01'],
     'http_req_duration{group:create_instance}': [],
     'http_req_duration{group:upload_data}': [],
     'http_req_duration{group:trigger_callback_and_confirm}': [],
