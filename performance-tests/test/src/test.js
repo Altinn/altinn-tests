@@ -133,6 +133,7 @@ export function create_instance(data, id) {
   check(resp, {
     'instance generation is success': (r) => r.status === 201,
   });
+  if (resp.status != 201) stopIterationOnFail('Get instance failed', false, resp);
   return resp;
 }
 
