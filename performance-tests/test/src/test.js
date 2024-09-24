@@ -5,8 +5,10 @@ import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import { SharedArray } from 'k6/data';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.2/index.js';
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
-import {generateToken} from './token-generator.js';
-const taxXml = open('tax.xml', 'b');;
+import {generateToken, stopIterationOnFail} from './token-generator.js';
+const taxXml = open('tax.xml', 'b');
+
+const messages = [];
 
 export const options = {
   summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(95)', 'p(99)', 'p(99.5)', 'p(99.9)', 'count'],
@@ -49,6 +51,12 @@ export function setup() {
   };
   
   var token = generateToken(tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
+  messages.push(token.status_text)
+  check(token, {
+    'Token generation is success': (r) => r.status === 200,
+  });
+  if (token.status != 200) stopIterationOnFail('token gen failed', false, token);
+  token = token.body;
   data.idKeys.push({
       partyId: data.partyId, 
       userId: data.userId,
@@ -198,15 +206,15 @@ export function handleSummary2(data) {
 }
 
 export function my_summary(data) {
-  var lines = [];
-  lines.push("sjekker egen stout");
-  lines.push("funker det?");
-  return lines.join('\n');
+  var megs = ["###########", '$$$$$$$$$$$$']
+  // var m = "tt########################"
+  // messages.push("QQQQQQ")
+  return messages.join();
 }
 
 export function handleSummary(data) {
   return {
-    'stdout': my_summary(data, { indent: ' ', enableColors: true }),
+    'stdout': my_summary(data),
     'stdout.txt': textSummary(data, { indent: ' ', enableColors: true }),
     'summary.json': JSON.stringify(data), //the default data object
     "summary.html": htmlReport(data),
