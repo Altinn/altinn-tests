@@ -7,15 +7,13 @@ import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.2/index.js';
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 import {generateToken} from './token-generator.js';
 import { fail } from 'k6';
-import exec from 'k6/execution';
 
 const taxXml = open('tax.xml', 'b');
-
-const messages = ["KKKKKKKKKK"];
 
 export const options = {
   summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(95)', 'p(99)', 'p(99.5)', 'p(99.9)', 'count'],
   thresholds: {
+    http_req_failed: ['rate<0.01'],
     'http_req_duration{group:create_instance}': [],
     'http_req_duration{group:upload_data}': [],
     'http_req_duration{group:trigger_callback_and_confirm}': [],
@@ -126,15 +124,12 @@ export function create_instance(data, id) {
   };
 
   var request_body = JSON.stringify(instance)
-  console.log(request_body);
   var resp = http.post(endPoint, request_body, params);
-  console.log(endPoint);
-  console.log(resp.status_text);
   if (!check(resp, {
       'instance generation is success': (r) => r.status === 201,
     })
   ) {
-      exec.test.abort('status code was *not* 201');
+      fail('status code was *not* 201');
   }
   return resp;
 }
