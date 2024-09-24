@@ -18,7 +18,7 @@ jobs:
         uses: grafana/run-k6-action@v1  
         with: 
           path: performance-tests/test/src/test.js
-          flags: --http-debug 
+          flags: --http-debug --verbose --out statsd
         env:
           K6_WEB_DASHBOARD: true
           K6_WEB_DASHBOARD_EXPORT: html-report.html
