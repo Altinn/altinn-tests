@@ -190,12 +190,6 @@ export function http_get_with_token(endPoint, token, tag) {
   return resp;
 }
 
-export function handleSummary2(data) {
-  return {
-    'summary.json': JSON.stringify(data), //the default data object
-  };
-}
-
 export function handleSummary(data) {
   return {
     'stdout': textSummary(data, { indent: ' ', enableColors: true }),
