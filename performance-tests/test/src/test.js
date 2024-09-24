@@ -5,7 +5,9 @@ import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import { SharedArray } from 'k6/data';
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.2/index.js';
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
-import {generateToken, stopIterationOnFail} from './token-generator.js';
+import {generateToken} from './token-generator.js';
+import { abort, fail } from 'k6';
+
 const taxXml = open('tax.xml', 'b');
 
 const messages = ["KKKKKKKKKK"];
@@ -77,7 +79,6 @@ export function submit_tax(data, id) {
   group("Submit tax report", function () {
       // 1. Create instance
     var instance_resp = create_instance(data, id);
-    if (instance_resp.status != 201) return; 
 
     // 2. Uplod tax report
     var instance = instance_resp.json();
@@ -130,10 +131,12 @@ export function create_instance(data, id) {
   var resp = http.post(endPoint, request_body, params);
   console.log(endPoint);
   console.log(resp.status_text);
-  check(resp, {
-    'instance generation is success': (r) => r.status === 201,
-  });
-  if (resp.status != 201) stopIterationOnFail('Get instance failed', false, resp);
+  if (!check(resp, {
+      'instance generation is success': (r) => r.status === 201,
+    })
+  ) {
+      fail('status code was *not* 201');
+  }
   return resp;
 }
 
@@ -199,22 +202,22 @@ export function handleSummary2(data) {
   };
 }
 
-export function my_summary(data) {
-  console.log("my_summary");
-  console.log(messages);
-  var lines = [];
-  lines.push("sjekker egen stout");
-  lines.push("funker det?");
-  return lines.join('\n');
+export function handleSummary(data) {
+  return {
+    'stdout': textSummary(data, { indent: ' ', enableColors: true }),
+    'stdout.txt': textSummary(data, { indent: ' ', enableColors: true }),
+    'summary.json': JSON.stringify(data), //the default data object
+    "summary.html": htmlReport(data),
+  };
 }
 
-// export function handleSummary(data) {
-//   return {
-//     'stdout': my_summary(data, { indent: ' ', enableColors: true }),
-//     'stdout.txt': textSummary(data, { indent: ' ', enableColors: true }),
-//     'summary.json': JSON.stringify(data), //the default data object
-//     "summary.html": htmlReport(data),
-//   };
+export function chackIteration(testName, res) {
+  if (res != null) {
+      fail(testName + ': Response code: ' + res.status);
+  } else if (!success) {
+      fail(testName);
+  }
+}
 
 //   // return {
 //   //   'junit.xml': jUnit(data), // Transform summary and save it as a JUnit XML...
