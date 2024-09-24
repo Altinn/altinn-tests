@@ -8,7 +8,7 @@ import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporte
 import {generateToken, stopIterationOnFail} from './token-generator.js';
 const taxXml = open('tax.xml', 'b');
 
-const messages = [];
+const messages = ["KKKKKKKKKK"];
 
 export const options = {
   summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(95)', 'p(99)', 'p(99.5)', 'p(99.9)', 'count'],
@@ -51,11 +51,6 @@ export function setup() {
   };
   
   var token = generateToken(tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
-  messages.push(token.status_text)
-  check(token, {
-    'Token generation is success': (r) => r.status === 200,
-  });
-  if (token.status != 200) stopIterationOnFail('token gen failed', false, token);
   token = token.body;
   data.idKeys.push({
       partyId: data.partyId, 
@@ -206,21 +201,23 @@ export function handleSummary2(data) {
 }
 
 export function my_summary(data) {
-  var megs = ["###########", '$$$$$$$$$$$$']
-  // var m = "tt########################"
-  // messages.push("QQQQQQ")
-  return messages.join();
+  console.log("my_summary");
+  console.log(messages);
+  var lines = [];
+  lines.push("sjekker egen stout");
+  lines.push("funker det?");
+  return lines.join('\n');
 }
 
-export function handleSummary(data) {
-  return {
-    'stdout': my_summary(data),
-    'stdout.txt': textSummary(data, { indent: ' ', enableColors: true }),
-    'summary.json': JSON.stringify(data), //the default data object
-    "summary.html": htmlReport(data),
-  };
+// export function handleSummary(data) {
+//   return {
+//     'stdout': my_summary(data, { indent: ' ', enableColors: true }),
+//     'stdout.txt': textSummary(data, { indent: ' ', enableColors: true }),
+//     'summary.json': JSON.stringify(data), //the default data object
+//     "summary.html": htmlReport(data),
+//   };
 
-  // return {
-  //   'junit.xml': jUnit(data), // Transform summary and save it as a JUnit XML...
-  // };
-}
+//   // return {
+//   //   'junit.xml': jUnit(data), // Transform summary and save it as a JUnit XML...
+//   // };
+// }
