@@ -17,10 +17,6 @@ export function generateToken(userName, userPwd, queryParams) {
   };
 
   var token = http.get(endpoint, params);
-  console.log(token.status_text);
-  console.debug(token.status_text);
-  console.error(token.status_text);
-
   check(token, {
     'Token generation is success': (r) => r.status === 200,
   });
