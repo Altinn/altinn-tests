@@ -25,7 +25,7 @@ jobs:
           tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
           userid: ${{ secrets.USERID }}
           partyid: ${{ secrets.PARTYID }}
-          ssn: ${{ secrets.SNN }}
+          ssn: ${{ secrets.SSN }}
           serviceowner: ${{ secrets.OWNER }}
           K6_LOG_OUTPUT: stdout
       - name: Upload test results
