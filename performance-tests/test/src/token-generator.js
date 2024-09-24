@@ -8,8 +8,8 @@ export function generateToken(userName, userPwd, queryParams) {
   const encodedCredentials = encoding.b64encode(credentials);
   var endpoint = 'https://altinn-testtools-token-generator.azurewebsites.net/api/GetPersonalToken';
   endpoint += buildQueryParametersForEndpoint(queryParams);
-  console.log(endpoint);
-  console.log(encodedCredentials);
+  console.info(endpoint);
+  console.info(encodedCredentials);
   var params = {
     headers: {
       Authorization: `Basic ${encodedCredentials}`,
