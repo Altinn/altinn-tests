@@ -199,7 +199,7 @@ export function handleSummary2(data) {
 
 export function handleSummary(data) {
   return {
-    'stdout': textSummary(data, { indent: ' ', enableColors: true }),
+    //'stdout': textSummary(data, { indent: ' ', enableColors: true }),
     'stdout.txt': textSummary(data, { indent: ' ', enableColors: true }),
     'summary.json': JSON.stringify(data), //the default data object
     "summary.html": htmlReport(data),
