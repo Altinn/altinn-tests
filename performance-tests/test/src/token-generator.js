@@ -42,8 +42,10 @@ export function buildQueryParametersForEndpoint(filterParameters) {
 
 export function stopIterationOnFail(testName, success, res) {
     if (!success && res != null) {
+        console.log("fail 1");
         fail(testName + ': Response code: ' + res.status);
     } else if (!success) {
+        console.log("fail 2");
         fail(testName);
     }
 }
