@@ -27,6 +27,7 @@ jobs:
           partyid: ${{ secrets.PARTYID }}
           ssn: ${{ secrets.SNN }}
           serviceowner: ${{ secrets.OWNER }}
+          K6_LOG_OUTPUT: stdout
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:

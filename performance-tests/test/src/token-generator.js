@@ -21,10 +21,10 @@ export function generateToken(userName, userPwd, queryParams) {
   console.debug(token.status_text);
   console.error(token.status_text);
 
-  // check(token, {
-  //   'Token generation is success': (r) => r.status === 200,
-  // });
-  // if (token.status != 200) stopIterationOnFail('token gen failed', false, token);
+  check(token, {
+    'Token generation is success': (r) => r.status === 200,
+  });
+  if (token.status != 200) stopIterationOnFail('token gen failed', false, token);
   token = token.body;
   return token;
 }
