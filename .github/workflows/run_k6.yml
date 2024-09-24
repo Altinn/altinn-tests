@@ -32,14 +32,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: summary-text
-          path: stdout.txt
+          path: performance-tests/test/src/stdout.txt
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
           name: summary-html
-          path: summary.html
+          path: performance-tests/test/src/summary.html
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
-          name: html-report
-          path: html-report.html
+          name: summary-json
+          path: performance-tests/test/src/summary.json
