@@ -20,7 +20,7 @@ jobs:
         run: xk6 build --with github.com/avitalique/xk6-file@latest
 
       - name: Run k6 to generate tokens
-        run: ./k6 run performance-tests/test/src/test.js
+        run: ./k6 run performance-tests/test/src/generate-tokens.js
         env:
           env: ${{ secrets.YTENVIRONMENT }}
           tokengenuser: ${{ secrets.TOKENGENUSER }}
