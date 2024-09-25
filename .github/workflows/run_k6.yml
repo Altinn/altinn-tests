@@ -14,20 +14,19 @@ jobs:
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
+
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1  
         with: 
           path: performance-tests/test/src/test.js
-          flags: --http-debug="full"
+          flags: --vus=20 --duration=1m
         env:
           YTENVIRONMENT: ${{ secrets.YTENVIRONMENT }}
           tokengenuser: ${{ secrets.TOKENGENUSER }}
           tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
-          userid: ${{ secrets.USERID }}
-          partyid: ${{ secrets.PARTYID }}
-          ssn: ${{ secrets.SSN }}
           serviceowner: ${{ secrets.OWNER }}
           K6_LOG_OUTPUT: stdout
+
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
