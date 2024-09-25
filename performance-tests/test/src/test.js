@@ -63,7 +63,6 @@ export function setup() {
       break;
     }
   };
-  console.log(data.idKeys.length);
   return data;
 }
 
@@ -116,9 +115,6 @@ export function create_instance(data, id) {
       DataValues: { inntektsaar: "2021" }
     };
 
-  console.info(data.searchUrlYt);
-  console.info(data.basePath);
-    
   var endPoint = data.searchUrlYt + data.basePath + "/instances";
   var params = {
     headers: {
