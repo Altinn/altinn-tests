@@ -10,7 +10,7 @@ import { fail } from 'k6';
 
 const taxXml = open('tax.xml', 'b');
 const idKeys = new SharedArray('idKeys', function () {
-  return papaparse.parse(open('./data.csv'), { header: true }).data;
+  return papaparse.parse(open('data.csv'), { header: true }).data;
 });
 
 export const options = {
