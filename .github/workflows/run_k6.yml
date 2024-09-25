@@ -20,7 +20,6 @@ jobs:
         working-directory: ./performance-tests/test/src
         run: xk6 build --with github.com/avitalique/xk6-file@latest
 
-        # genersate tokens will write a file 
       - name: Run k6 to generate tokens
         working-directory: ./performance-tests/test/src
         run: ./k6 run generate-tokens.js
@@ -28,6 +27,7 @@ jobs:
           env: ${{ secrets.YTENVIRONMENT }}
           tokengenuser: ${{ secrets.TOKENGENUSER }}
           tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
+          limit: 10
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
@@ -36,7 +36,7 @@ jobs:
         uses: grafana/run-k6-action@v1  
         with: 
           path: performance-tests/test/src/test.js
-          flags: --vus=30 --duration=5m
+          flags: --vus=10 --duration=1m
         env:
           K6_WEB_DASHBOARD: true 
           K6_WEB_DASHBOARD_EXPORT: html-report.html
@@ -54,3 +54,16 @@ jobs:
         with:
           name: extended-html
           path: html-report.html
+
+      - name: Upload HTML report to Azure
+        if: always()
+        shell: bash
+        run: |
+            REPORT_DIR='taxreports'
+            azcopy cp --recursive "performance-tests/test/src/*.html" "https://altinnloadtests.z1.web.core.windows.net/\$web/$REPORT_DIR"
+            echo "::Link to test results: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/index.html"
+        env:
+            AZCOPY_AUTO_LOGIN_TYPE: SPN
+            AZCOPY_SPA_APPLICATION_ID: ${{ secrets.AZCOPY_SPA_APPLICATION_ID }}
+            AZCOPY_SPA_CLIENT_SECRET: ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }}
+            AZCOPY_TENANT_ID: ${{ secrets.AZCOPY_TENANT_ID }}
