@@ -10,7 +10,7 @@ import { fail } from 'k6';
 
 const taxXml = open('tax.xml', 'b');
 const idKeys = new SharedArray('idKeys', function () {
-  return papaparse.parse(open('data.csv'), { header: true }).data;
+  return papaparse.parse(open('data-with-tokens.csv'), { header: true }).data;
 });
 
 export const options = {
@@ -44,20 +44,20 @@ export function setup() {
   var tokenGeneratorUserName = __ENV.tokengenuser;
   var tokenGeneratorUserPwd =  __ENV.tokengenuserpwd;
   for (const idKey of idKeys) {
-    var tokenGenParams = {
-       env: data.environment,
-       userId: idKey.userid,
-       partyId: idKey.partyid,
-       pid: idKey.ssn,
-       ttl: 1200,
-    };
+    // var tokenGenParams = {
+    //    env: data.environment,
+    //    userId: idKey.userid,
+    //    partyId: idKey.partyid,
+    //    pid: idKey.ssn,
+    //    ttl: 1200,
+    // };
   
-    var token = generateToken(tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
+    // var token = generateToken(tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
     data.idKeys.push({
-      partyId: idKey.partyid, 
-      userId: idKey.userid,
+      partyId: idKey.partyId, 
+      userId: idKey.userId,
       ssn: idKey.ssn,
-      token: token
+      token: idKey.token
     });
     if ((options.vus === undefined || options.vus === 1) && (options.iterations === undefined || options.iterations === 1)) {
       break;
