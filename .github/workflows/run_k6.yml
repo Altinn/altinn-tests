@@ -57,7 +57,7 @@ jobs:
 
       - name: Upload HTML report to Azure
         if: always()
-        shell: /bin/bash
+        shell: /bin/sh
         run: |
             REPORT_DIR='taxreports'
             azcopy cp --recursive "performance-tests/test/src/*.html" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
