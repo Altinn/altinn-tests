@@ -19,29 +19,25 @@ jobs:
         uses: grafana/run-k6-action@v1  
         with: 
           path: performance-tests/test/src/test.js
-          flags: --vus=20 --duration=1m
+          flags: --vus=30 --duration=5m
         env:
+          K6_WEB_DASHBOARD: true 
+          K6_WEB_DASHBOARD_EXPORT: html-report.html
           YTENVIRONMENT: ${{ secrets.YTENVIRONMENT }}
           tokengenuser: ${{ secrets.TOKENGENUSER }}
           tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
           serviceowner: ${{ secrets.OWNER }}
           K6_LOG_OUTPUT: stdout
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: summary-text
-          path: stdout.txt
-      - name: Upload test results
+      - name: Upload summary html report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: summary-html
           path: summary.html
-      - name: Upload test results
+      - name: Upload extended html report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: summary-json
-          path: summary.json
+          name: extended-html
+          path: html-report.html
