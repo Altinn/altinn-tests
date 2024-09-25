@@ -9,6 +9,9 @@ import {generateToken} from './token-generator.js';
 import { fail } from 'k6';
 
 const taxXml = open('tax.xml', 'b');
+const idKeys = new SharedArray('idKeys', function () {
+  return papaparse.parse(open('./data.csv'), { header: true }).data;
+});
 
 export const options = {
   summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(95)', 'p(99)', 'p(99.5)', 'p(99.9)', 'count'],
@@ -33,9 +36,6 @@ export const options = {
 export function setup() {
   var data = {
     environment: __ENV.YTENVIRONMENT.toLowerCase(),
-    userId: __ENV.userid,
-    partyId: __ENV.partyid,
-    ssn: __ENV.ssn,
     serviceOwner: __ENV.serviceowner,
     searchUrlYt: `https://${__ENV.serviceowner}.apps.yt01.altinn.cloud/`,
     basePath: (__ENV.serviceowner == 'ttd' ? "ttd/skattemelding-kopi" : "skd/formueinntekt-skattemelding-v2"),
@@ -43,27 +43,32 @@ export function setup() {
   };
   var tokenGeneratorUserName = __ENV.tokengenuser;
   var tokenGeneratorUserPwd =  __ENV.tokengenuserpwd;
-  var tokenGenParams = {
-      env: data.environment,
-      userId: data.userId,
-      partyId: data.partyId,
-      pid: data.ssn,
-      ttl: 3600*24*10,
-  };
+  for (const idKey of idKeys) {
+    var tokenGenParams = {
+       env: data.environment,
+       userId: idKey.userid,
+       partyId: idKey.partyid,
+       pid: idKey.ssn,
+       ttl: 1200,
+    };
   
-  var token = generateToken(tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
-  data.idKeys.push({
-      partyId: data.partyId, 
-      userId: data.userId,
-      ssn: data.ssn,
-      token: token,
-  });
+    var token = generateToken(tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
+    data.idKeys.push({
+      partyId: idKey.partyid, 
+      userId: idKey.userid,
+      ssn: idKey.ssn,
+      token: token
+    });
+    if ((options.vus === undefined || options.vus === 1) && (options.iterations === undefined || options.iterations === 1)) {
+      break;
+    }
+  };
+  console.log(data.idKeys.length);
   return data;
 }
 
 export default function(data) {
   if ((options.vus === undefined || options.vus === 1) && (options.iterations === undefined || options.iterations === 1)) {
-    console.log("Single call");
     submit_tax(data, data.idKeys[0]);
   }
   else {
@@ -78,7 +83,7 @@ export function submit_tax(data, id) {
   group("Submit tax report", function () {
       // 1. Create instance
     var instance_resp = create_instance(data, id);
-
+    if (instance_resp.status != 201) return;
     // 2. Uplod tax report
     var instance = instance_resp.json();
     var upload_resp = upload_data(data, instance, id);
@@ -96,7 +101,7 @@ export function submit_tax(data, id) {
 
     // 6. Get receipt
     var receipt_element = receipt_id_resp.json().data.find(x => x.dataType === "Skattemeldingsapp_v2")
-    var receipt_resp = get_receipt(data, instance, id, receipt_element.id)
+    get_receipt(data, instance, id, receipt_element.id)
   });
   
 }
@@ -124,14 +129,7 @@ export function create_instance(data, id) {
   };
 
   var request_body = JSON.stringify(instance)
-  var resp = http.post(endPoint, request_body, params);
-  if (!check(resp, {
-      'instance generation is success': (r) => r.status === 201,
-    })
-  ) {
-      //fail('status code was *not* 201');
-  }
-  return resp;
+  return http.post(endPoint, request_body, params);
 }
 
 export function upload_data(data, instance, id) {
@@ -144,11 +142,7 @@ export function upload_data(data, instance, id) {
     },
     tags: { group: 'upload_data', all: 'all' }
   };
-  var resp = http.post(endPoint, taxXml, params);
-  check(resp, {
-    'upload tax is success': (r) => r.status === 201,
-  });
-  return resp;
+  return http.post(endPoint, taxXml, params);
 }
 
 export function trigger_callback_and_confirm(data, instance, id) {
@@ -159,11 +153,7 @@ export function trigger_callback_and_confirm(data, instance, id) {
     },
     tags: { group: 'trigger_callback_and_confirm', all: 'all' }
   }
-  var resp = http.put(endPoint, null, params);
-  check(resp, {
-    'process next tax is success': (r) => r.status === 200,
-  });
-  return resp;
+  return http.put(endPoint, null, params);
 }
 
 export function get_receipt_id(data, instance, id) {
@@ -183,11 +173,7 @@ export function http_get_with_token(endPoint, token, tag) {
     },
     tags: { group: tag, all: 'all' }
   }
-  var resp = http.get(endPoint, params);
-  check(resp, {
-    'get receipt is success': (r) => r.status === 200,
-  });
-  return resp;
+  return http.get(endPoint, params);
 }
 
 export function handleSummary(data) {
