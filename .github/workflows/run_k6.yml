@@ -20,6 +20,7 @@ jobs:
         working-directory: ./performance-tests/test/src
         run: xk6 build --with github.com/avitalique/xk6-file@latest
 
+        # genersate tokens will write a file 
       - name: Run k6 to generate tokens
         working-directory: ./performance-tests/test/src
         run: ./k6 run generate-tokens.js
@@ -27,7 +28,6 @@ jobs:
           env: ${{ secrets.YTENVIRONMENT }}
           tokengenuser: ${{ secrets.TOKENGENUSER }}
           tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
-          K6_LOG_OUTPUT: stdout
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
@@ -40,12 +40,7 @@ jobs:
         env:
           K6_WEB_DASHBOARD: true 
           K6_WEB_DASHBOARD_EXPORT: html-report.html
-          YTENVIRONMENT: ${{ secrets.YTENVIRONMENT }}
-          tokengenuser: ${{ secrets.TOKENGENUSER }}
-          tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
           serviceowner: ${{ secrets.OWNER }}
-          K6_LOG_OUTPUT: stdout
-          K6_SETUP_TIMEOUT: 5m
 
       - name: Upload summary html report
         uses: actions/upload-artifact@v4
