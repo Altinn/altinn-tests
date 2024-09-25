@@ -57,13 +57,15 @@ jobs:
 
       - name: Upload HTML report to Azure
         if: always()
-        shell: bash
+        shell: /bin/bash
         run: |
             REPORT_DIR='taxreports'
-            azcopy cp --recursive "performance-tests/test/src/*.html" "https://altinnloadtests.z1.web.core.windows.net/\$web/$REPORT_DIR"
-            echo "::Link to test results: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/index.html"
+            azcopy cp --recursive "performance-tests/test/src/*.html" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
+            echo "::Link to test results summary: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/summary.html"
+            echo "::Link to test results extended: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/html-report.html"
         env:
             AZCOPY_AUTO_LOGIN_TYPE: SPN
             AZCOPY_SPA_APPLICATION_ID: ${{ secrets.AZCOPY_SPA_APPLICATION_ID }}
             AZCOPY_SPA_CLIENT_SECRET: ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }}
             AZCOPY_TENANT_ID: ${{ secrets.AZCOPY_TENANT_ID }}
+
