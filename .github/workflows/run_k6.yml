@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-test:
-    runs-on: ubuntu-latest
+    runs-on: Dagfinn-sin-MacBook-Pro-2
     #container: docker://golang:1.23-alpine
     steps:
       - name: Checkout
@@ -58,6 +58,13 @@ jobs:
         with:
           name: extended-html
           path: html-report.html
+
+      - name: Upload summary text report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: summary-txt
+          path: stdout.txt
 
       - name: Upload HTML report to Azure
         if: always()
