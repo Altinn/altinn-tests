@@ -25,11 +25,11 @@ on:
         default: ubuntu-latest
         options:
           - ubuntu-latest
-          - "'self-hosted', 'macOS', 'X64'"
+          - "self-hosted, macOS, X64"
 
 jobs:
   run-test:
-    runs-on: ["${{ inputs.select-runner }}"]
+    runs-on: [ "${{ inputs.select-runner }}" ]
     #runs-on: ['self-hosted', 'macOS', 'X64']
     #runs-on: ['self-hosted', 'Windows', 'X64']
     steps:
