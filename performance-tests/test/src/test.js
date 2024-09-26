@@ -84,7 +84,7 @@ export function submit_tax(data, id) {
     // 6. Get receipt
     var receipt_element = receipt_id_resp.json().data.find(x => x.dataType === "Skattemeldingsapp_v2")
     get_receipt(data, instance, id, receipt_element.id)
-    
+
   });
   
 }
@@ -159,6 +159,7 @@ export function http_get_with_token(endPoint, token, tag) {
 export function handleSummary(data) {
   return {
     'stdout': textSummary(data, { indent: ' ', enableColors: true }),
+    'stdout.txt': textSummary(data, { indent: ' ', enableColors: true }),
     "summary.html": htmlReport(data),
   };
 }
