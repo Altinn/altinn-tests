@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-test:
-    runs-on: Dagfinn-sin-MacBook-Pro-2
+    runs-on: ['self-hosted', 'macOS', 'X64']
     #container: docker://golang:1.23-alpine
     steps:
       - name: Checkout
