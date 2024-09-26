@@ -8,10 +8,15 @@ on:
 jobs:
   run-test:
     runs-on: ubuntu-latest
-    container: docker://golang:1.23-alpine
+    #container: docker://golang:1.23-alpine
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup go  
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
 
       - name: Install xk6
         run: go install go.k6.io/xk6/cmd/xk6@latest
@@ -57,7 +62,7 @@ jobs:
 
       - name: Upload HTML report to Azure
         if: always()
-        shell: sh
+        shell: bash
         run: |
             REPORT_DIR='taxreports'
             azcopy cp --recursive "performance-tests/test/src/*.html" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
