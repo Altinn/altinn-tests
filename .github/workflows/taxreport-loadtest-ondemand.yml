@@ -11,15 +11,25 @@ on:
       duration:
         description: 'duration of test, ie 30s, 1m, 10m'
         required: true
+        default: 1m
         type: string
       limit:
-        description: 'Limit the number of tokens to generate'
+        description: 'Limit the number of tokens to generate, 0 or less means create for every partyId/userId'
         required: true
         default: 10
         type: number
+      select-runner:
+        description: 'Select runner to run the test'
+        required: true
+        type: choice
+        default: ubuntu-latest
+        options:
+          - ubuntu-latest
+          - "'self-hosted', 'macOS', 'X64'"
+
 jobs:
   run-test:
-    runs-on: ubuntu-latest
+    runs-on: ["${{ inputs.select-runner }}"]
     #runs-on: ['self-hosted', 'macOS', 'X64']
     #runs-on: ['self-hosted', 'Windows', 'X64']
     steps:
