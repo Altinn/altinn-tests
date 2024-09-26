@@ -1,6 +1,22 @@
-name: k6 Load Test
+name: taxreport loadtest ondemand
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      vus:
+        description: 'Number of VUS'
+        required: true
+        default: 10
+        type: number
+      duration:
+        description: 'duration of test, ie 30s, 1m, 10m'
+        required: true
+        type: string
+      limit:
+        description: 'Limit the number of tokens to generate'
+        required: true
+        default: 10
+        type: number
 jobs:
   run-test:
     runs-on: ubuntu-latest
@@ -29,6 +45,7 @@ jobs:
           env: ${{ secrets.YTENVIRONMENT }}
           tokengenuser: ${{ secrets.TOKENGENUSER }}
           tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
+          limit: ${{ inputs.limit }}
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
@@ -37,7 +54,7 @@ jobs:
         uses: grafana/run-k6-action@v1  
         with: 
           path: performance-tests/tax-report/src/tax-report.js
-          flags: --vus=40 --duration=10m
+          flags: --vus=${{ inputs.vus }} --duration=${{ inputs.duration }}
         env:
           K6_WEB_DASHBOARD: true 
           K6_WEB_DASHBOARD_EXPORT: html-report.html
@@ -67,7 +84,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-            REPORT_DIR='taxreports'
+            REPORT_DIR='taxreports_ondemand'
             azcopy cp --recursive "*.html" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
             azcopy cp --recursive "stdout.txt" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
             echo "::Link to test results summary: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/summary.html"
