@@ -1,4 +1,4 @@
-name: k6 Load Test
+name: taxreport loadtest scheduled
 
 on:
   schedule:
@@ -70,7 +70,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-            REPORT_DIR='taxreports'
+            REPORT_DIR='taxreports_scheduled'
             azcopy cp --recursive "*.html" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
             azcopy cp --recursive "stdout.txt" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
             echo "::Link to test results summary: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/summary.html"
