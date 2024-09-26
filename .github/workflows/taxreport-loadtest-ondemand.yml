@@ -1,10 +1,6 @@
 name: k6 Load Test
 
-on:
-  push:
-    branches:
-      - '**'
-
+on: workflow_dispatch
 jobs:
   run-test:
     runs-on: ubuntu-latest
