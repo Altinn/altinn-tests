@@ -40,7 +40,7 @@ jobs:
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1  
         with: 
-          path: performance-tests/tax-report/src/test.js
+          path: performance-tests/tax-report/src/tax-report.js
           flags: --vus=40 --duration=10m
         env:
           K6_WEB_DASHBOARD: true 
