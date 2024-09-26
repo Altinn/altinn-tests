@@ -1,9 +1,8 @@
 name: k6 Load Test
 
 on:
-  push:
-    branches:
-      - '**'
+  schedule:
+    - cron: "15 4 * * *"
 
 jobs:
   run-test:
