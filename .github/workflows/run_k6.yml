@@ -32,7 +32,6 @@ jobs:
           env: ${{ secrets.YTENVIRONMENT }}
           tokengenuser: ${{ secrets.TOKENGENUSER }}
           tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
-          limit: 10
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
@@ -41,7 +40,7 @@ jobs:
         uses: grafana/run-k6-action@v1  
         with: 
           path: performance-tests/test/src/test.js
-          flags: --vus=10 --duration=1m
+          flags: --vus=40 --duration=10m
         env:
           K6_WEB_DASHBOARD: true 
           K6_WEB_DASHBOARD_EXPORT: html-report.html
@@ -66,8 +65,10 @@ jobs:
         run: |
             REPORT_DIR='taxreports'
             azcopy cp --recursive "*.html" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
+            azcopy cp --recursive "stdout.txt" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
             echo "::Link to test results summary: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/summary.html"
             echo "::Link to test results extended: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/html-report.html"
+            echo "::Link to test results summary text: title=TXT report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/stdout.txt"
         env:
             AZCOPY_AUTO_LOGIN_TYPE: SPN
             AZCOPY_SPA_APPLICATION_ID: ${{ secrets.AZCOPY_SPA_APPLICATION_ID }}
