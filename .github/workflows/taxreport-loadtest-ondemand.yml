@@ -24,8 +24,8 @@ on:
         type: choice
         default: ubuntu-latest
         options:
-          - "ubuntu-latest"
-          - "[self-hosted, macOS, X64]"
+          - ubuntu-latest
+          - "self-hosted, macOS, X64"
 
 jobs:
   run-test:
