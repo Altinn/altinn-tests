@@ -22,15 +22,16 @@ on:
         description: 'Select runner to run the test'
         required: true
         type: choice
-        default: "macOS, X64"
+        default: "[self-hosted,macOS,X64]"
         options:
           #- ubuntu-latest
-          - "macOS, X64"
+          - "[self-hosted,macOS,X64]"
 
 jobs:
   run-test:
     #runs-on: [ self-hosted, "${{ inputs.select-runner }}" ]
-    runs-on: ['self-hosted', 'macOS', 'X64']
+    runs-on: ${{ fromJSON(inputs.select-runner ) }}
+    #runs-on: ['self-hosted', 'macOS', 'X64']
     #runs-on: ['self-hosted', 'Windows', 'X64']
     steps:
       - name: Checkout
