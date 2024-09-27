@@ -9,7 +9,7 @@ on:
         default: 10
         type: number
       duration:
-        description: 'duration of test, ie 30s, 1m, 10m'
+        description: 'Duration of test, ie 30s, 1m, 10m'
         required: true
         default: 1m
         type: string
