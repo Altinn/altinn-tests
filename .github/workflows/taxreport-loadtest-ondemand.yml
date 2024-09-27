@@ -25,7 +25,7 @@ on:
         default: ubuntu-latest
         options:
           - ubuntu-latest
-          - "self-hosted, macOS, X64"
+          - "'self-hosted', 'macOS', 'X64'"
 
 jobs:
   run-test:
