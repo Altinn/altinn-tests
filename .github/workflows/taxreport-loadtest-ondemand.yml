@@ -29,7 +29,7 @@ on:
 
 jobs:
   run-test:
-    runs-on: [ "${{ fromJSON(inputs.select-runner) }}" ]
+    runs-on: [ "${{ inputs.select-runner }}" ]
     #runs-on: ['self-hosted', 'macOS', 'X64']
     #runs-on: ['self-hosted', 'Windows', 'X64']
     steps:
