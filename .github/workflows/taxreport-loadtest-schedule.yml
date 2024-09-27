@@ -70,12 +70,10 @@ jobs:
         if: always()
         shell: bash
         run: |
-            REPORT_DIR='taxreports_scheduled'
+            REPORT_DIR='taxreports_scheduled-${{ github.run_number }}-${{ github.run_attempt }}'
             azcopy cp --recursive "*.html" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
-            azcopy cp --recursive "stdout.txt" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
             echo "::Link to test results summary: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/summary.html"
             echo "::Link to test results extended: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/html-report.html"
-            echo "::Link to test results summary text: title=TXT report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/stdout.txt"
         env:
             AZCOPY_AUTO_LOGIN_TYPE: SPN
             AZCOPY_SPA_APPLICATION_ID: ${{ secrets.AZCOPY_SPA_APPLICATION_ID }}
