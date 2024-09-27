@@ -29,8 +29,8 @@ on:
 
 jobs:
   run-test:
-    #runs-on: [ "${{ inputs.select-runner }}" ]
-    runs-on: ['self-hosted', 'macOS', 'X64']
+    runs-on: [ "${{ inputs.select-runner }}" ]
+    #runs-on: ['self-hosted', 'macOS', 'X64']
     #runs-on: ['self-hosted', 'Windows', 'X64']
     steps:
       - name: Checkout

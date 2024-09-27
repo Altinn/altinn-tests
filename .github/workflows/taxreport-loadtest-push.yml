@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - '**'
+    paths:
+      - performance-tests/tax-report/**
+      - .github/workflows/taxreport-loadtest-push.yml
 
 jobs:
   run-test:
