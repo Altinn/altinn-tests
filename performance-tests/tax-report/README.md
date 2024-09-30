@@ -24,7 +24,7 @@ k6 run -e serviceowner=<> tax-report.js
 ```
 ## Github actions
 ### On push
-Runs a test for every push to the performance-loadtest/ta-report directory
+Runs a test for every push to the performance-loadtest/tax-report directory
 - one vu
 - one minute
 ### Scheduled
@@ -33,7 +33,7 @@ Runs every morning at 06:15
 - 15 minutes
 ### Ondemand
 Runs when requested
-- selectable num,ber of vus
+- selectable number of vus
 - selectable duration
 - selectable runner
   
