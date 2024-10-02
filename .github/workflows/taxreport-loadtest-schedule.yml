@@ -2,7 +2,7 @@ name: taxreport loadtest scheduled
 
 on:
   schedule:
-    - cron: "15 4 * * *"
+    - cron: "15 4 1 * *"
 
 jobs:
   run-test:
