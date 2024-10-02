@@ -4,3 +4,4 @@
 - [Install k6 extentions](https://github.com/grafana/xk6/)
 ### Test cases:
 - [tax report](tax-report/README.md)
+- [t3search](t3search/README.md)
