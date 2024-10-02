@@ -8,6 +8,7 @@ const environment = __ENV.env.toLowerCase();
 const tokenGeneratorUserName = __ENV.tokengenuser;
 const tokenGeneratorUserPwd = __ENV.tokengenuserpwd;
 const limit = (__ENV.limit === undefined ? 0 : __ENV.limit);
+const ttl = (__ENV.ttl === undefined ? 3600 : __ENV.ttl)
 
 const filepath = 'data-with-tokens.csv';
 const idKeys = new SharedArray('idKeys', function () {
@@ -18,7 +19,7 @@ export const options = {
   vus: 1,
 };
 
-export default function(data) {
+export default function() {
   file.writeString(filepath, 'userId,partyId,ssn,token');
   var count = 0
   for (const idKey of idKeys) {
@@ -27,7 +28,7 @@ export default function(data) {
       userId: idKey.userid,
       partyId: idKey.partyid,
       pid: idKey.ssn,
-      ttl: 3600*24*10,
+      ttl: ttl
     };
     var token = generateToken(tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
     file.appendString(filepath, `\n${idKey.userid},${idKey.partyid},${idKey.ssn},${token}`);

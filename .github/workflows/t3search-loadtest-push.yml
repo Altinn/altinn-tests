@@ -5,8 +5,8 @@ on:
     branches:
       - '**'
     paths:
-      - performance-tests/tax-report/**
-      - .github/workflows/taxreport-loadtest-push.yml
+      - performance-tests/t3search/**
+      - .github/workflows/t3search-loadtest-push.yml
 
 jobs:
   run-test:
@@ -42,9 +42,9 @@ jobs:
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1  
         with: 
-          path: performance-tests/tax-report/src/tax-report.js
+          path: performance-tests/t3search/src/t3search.js
           flags: --vus=1 --iterations=1
         env:
-          serviceowner: ${{ secrets.OWNER }}
+          subscription_key: ${{ secrets.SUBSCRIPTION_KEY }}
 
 
