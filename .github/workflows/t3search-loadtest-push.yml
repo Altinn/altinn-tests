@@ -1,12 +1,12 @@
-name: taxreport loadtest smoketest
+name: t3search loadtest smoketest
 
 on:
   push:
     branches:
       - '**'
     paths:
-      - performance-tests/tax-report/**
-      - .github/workflows/taxreport-loadtest-push.yml
+      - performance-tests/t3search/**
+      - .github/workflows/t3search-loadtest-push.yml
 
 jobs:
   run-test:
@@ -24,11 +24,11 @@ jobs:
         run: go install go.k6.io/xk6/cmd/xk6@latest
 
       - name: Build xk6-counter binary
-        working-directory: ./performance-tests/tax-report/src
+        working-directory: ./performance-tests/t3search/src
         run: xk6 build --with github.com/avitalique/xk6-file@latest
 
       - name: Run k6 to generate tokens
-        working-directory: ./performance-tests/tax-report/src
+        working-directory: ./performance-tests/t3search/src
         run: ./k6 run ../../generate-tokens/src/generate-tokens.js
         env:
           env: ${{ secrets.YTENVIRONMENT }}
@@ -42,9 +42,9 @@ jobs:
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1  
         with: 
-          path: performance-tests/tax-report/src/tax-report.js
+          path: performance-tests/t3search/src/t3search.js
           flags: --vus=1 --iterations=1
         env:
-          serviceowner: ${{ secrets.OWNER }}
+          subscription_key: ${{ secrets.SUBSCRIPTION_KEY }}
 
 
