@@ -1,0 +1,104 @@
+name: t3search loadtest ondemand
+
+on:
+  workflow_dispatch:
+    inputs:
+      vus:
+        description: 'Number of VUS'
+        required: true
+        default: 10
+        type: number
+      duration:
+        description: 'Duration of test, ie 30s, 1m, 10m'
+        required: true
+        default: 1m
+        type: string
+      limit:
+        description: 'Limit the number of tokens to generate, 0 or less means create for every partyId/userId'
+        required: true
+        default: 10
+        type: number
+      select-runner:
+        description: 'Select runner to run the test'
+        required: true
+        type: choice
+        default: "'ubuntu-latest'"
+        options:
+          - "'ubuntu-latest'"
+          - "['self-hosted', 'macOS', 'X64']"
+
+jobs:
+  run-test:
+    runs-on: ${{ fromJSON(inputs.select-runner) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup go  
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Install xk6
+        run: go install go.k6.io/xk6/cmd/xk6@latest
+
+      - name: Build xk6-counter binary
+        working-directory: ./performance-tests/t3search/src
+        run: xk6 build --with github.com/avitalique/xk6-file@latest
+
+      - name: Run k6 to generate tokens
+        working-directory: ./performance-tests/t3search/src
+        run: ./k6 run ../../generate-tokens/src/generate-tokens.js
+        env:
+          env: ${{ secrets.YTENVIRONMENT }}
+          tokengenuser: ${{ secrets.TOKENGENUSER }}
+          tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
+          limit: ${{ inputs.limit }}
+
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Run local k6 test
+        uses: grafana/run-k6-action@v1  
+        with: 
+          path: performance-tests/t3search/src/t3sesarch.js
+          flags: --vus=${{ inputs.vus }} --duration=${{ inputs.duration }}
+        env:
+          K6_WEB_DASHBOARD: true 
+          K6_WEB_DASHBOARD_EXPORT: html-report.html
+          subscription_key: ${{ secrets.SUBSCRIPTION_KEY }}
+
+      - name: Upload summary html report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: summary-html
+          path: summary.html
+      - name: Upload extended html report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: extended-html
+          path: html-report.html
+
+      - name: Upload summary text report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: summary-txt
+          path: stdout.txt
+
+      - name: Upload HTML report to Azure
+        if: always()
+        shell: bash
+        run: |
+            REPORT_DIR='t3search_ondemand-${{ github.run_number }}-${{ github.run_attempt }}'
+            azcopy cp --recursive "*.html" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
+            echo "::Link to test results summary: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/summary.html"
+            echo "::Link to test results extended: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/html-report.html"
+        env:
+            AZCOPY_AUTO_LOGIN_TYPE: SPN
+            AZCOPY_SPA_APPLICATION_ID: ${{ secrets.AZCOPY_SPA_APPLICATION_ID }}
+            AZCOPY_SPA_CLIENT_SECRET: ${{ secrets.AZCOPY_SPA_CLIENT_SECRET }}
+            AZCOPY_TENANT_ID: ${{ secrets.AZCOPY_TENANT_ID }}
+
