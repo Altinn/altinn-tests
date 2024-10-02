@@ -61,7 +61,7 @@ jobs:
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1  
         with: 
-          path: performance-tests/t3search/src/t3sesarch.js
+          path: performance-tests/t3search/src/t3search.js
           flags: --vus=${{ inputs.vus }} --duration=${{ inputs.duration }}
         env:
           K6_WEB_DASHBOARD: true 
