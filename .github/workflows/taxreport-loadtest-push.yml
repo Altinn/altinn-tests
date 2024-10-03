@@ -9,7 +9,7 @@ on:
       - .github/workflows/taxreport-loadtest-push.yml
 
 jobs:
-  run-test:
+  run-taxreport-on-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
