@@ -28,7 +28,7 @@ on:
           - "['self-hosted', 'macOS', 'X64']"
 
 jobs:
-  run-test:
+  run-t3search-ondemand:
     runs-on: ${{ fromJSON(inputs.select-runner) }}
     steps:
       - name: Checkout
