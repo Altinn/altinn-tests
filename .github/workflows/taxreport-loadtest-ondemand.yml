@@ -66,6 +66,8 @@ jobs:
         env:
           K6_WEB_DASHBOARD: true 
           K6_WEB_DASHBOARD_EXPORT: html-report.html
+          K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
+          K6_CLOUD_PROJECT_ID: ${{ secrets.K6_CLOUD_PROJECT_ID }}
           serviceowner: ${{ secrets.OWNER }}
 
       - name: Upload summary html report
@@ -92,6 +94,8 @@ jobs:
         if: always()
         shell: bash
         run: |
+            sudo apt-get update
+            sudo apt-get -y install azcopy
             REPORT_DIR='taxreports_ondemand-${{ github.run_number }}-${{ github.run_attempt }}'
             azcopy cp --recursive "*.html" "https://altinnloadtests.blob.core.windows.net/\$web/$REPORT_DIR"
             echo "::Link to test results summary: title=HTML report url::https://altinnloadtests.z1.web.core.windows.net/$REPORT_DIR/summary.html"
