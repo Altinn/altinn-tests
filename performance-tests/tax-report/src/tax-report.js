@@ -105,7 +105,7 @@ export function create_instance(data, id) {
       Authorization: 'Bearer ' + id.token,
       'Content-Type': 'application/json'
     },
-    tags: { group: 'create_instance' }
+    tags: { name: 'create_instance' }
   };
 
   var request_body = JSON.stringify(instance)
@@ -120,7 +120,7 @@ export function upload_data(data, instance, id) {
       'Content-Type': 'text/xml',
       'Content-Disposition': 'attachment; filename=\"skattemelding.xml\"'
     },
-    tags: { group: 'upload_data' }
+    tags: { name: 'upload_data' }
   };
   return http.post(endPoint, taxXml, params);
 }
@@ -131,7 +131,7 @@ export function trigger_callback_and_confirm(data, instance, id) {
     headers: {
       Authorization: 'Bearer ' + id.token
     },
-    tags: { group: 'trigger_callback_and_confirm' }
+    tags: { name: 'trigger_callback_and_confirm' }
   }
   return http.put(endPoint, null, params);
 }
@@ -151,7 +151,7 @@ export function http_get_with_token(endPoint, token, tag) {
     headers: {
       Authorization: 'Bearer ' + token
     },
-    tags: { group: tag }
+    tags: { name: tag }
   }
   return http.get(endPoint, params);
 }
