@@ -14,7 +14,7 @@ Load test for tax report, does the following, divided in two separate steps
 2. Go to src directory
 3. build k6 with fileextention
 4. run k6 extention to create tokens
-4. run test
+5. run test
 ```
 git clone <this repo>
 cd altinn-test/performance-tests/tax-report/src
