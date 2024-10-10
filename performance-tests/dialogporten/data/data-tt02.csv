@@ -1,2 +1,2 @@
-org,scopes,partyid,pid,ssn,resource
-digdir,digdir:dialogporten,50018133,05085301731,05085301731,super-simple-service
+org,orgno,scopes,ssn,resource,scopes_search
+digdir,991825827,digdir:dialogporten.serviceprovider,08895699684,super-simple-service,digdir:dialogporten
