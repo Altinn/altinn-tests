@@ -20,6 +20,20 @@ export function generateToken(userName, userPwd, queryParams) {
   return token;
 }
 
+export function generateMaskinPortenToken(token, env) {
+    var endpoint = `https://platform.${env}.altinn.no/authentication/api/v1/exchange/maskinporten`;
+    var params = {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    };
+  
+    var mp_token = http.get(endpoint, params);
+    if (mp_token.status != 200) stopIterationOnFail('token gen failed', false, mp_token);
+    token = mp_token.body;
+    return token;
+  }
+
 export function buildQueryParametersForEndpoint(filterParameters) {
     var query = '?';
     Object.keys(filterParameters).forEach(function (key) {
