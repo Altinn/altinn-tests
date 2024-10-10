@@ -2,14 +2,30 @@
 Load test for t3search, does the following, divided in two separate steps
 
 ## Tests
-### Post dialog
-The test must:
-1. Find a organisation to send a dialog from, a resource to send the dialog on and a user to send the dialog to
-2. Get a maskinporten token for orgnisation on resource (and user?)
-3. POST a message with token from 2. and payload (message metadata + message?)
+### Create dialog
+1. Generate maskinporten token
+Needed parameters:
+- env: environment to run in: yt01 | at21 ...
+- org: organisation that sends the dialog, text string
+- orgNo: Organisation number (9 digits)
+- scopes: digdir:dialogporten.serviceprovider
+2. Create dialog
+Needed parameters:
+- token from 1.
+- ssn: personnummer (11 digits)
+- resource: super-simple-service
+
 ### Search messages, enduser
-1. Create token for user (and resource?)
-2. Send a GET on enduser endpoint
+1. Create token for user
+Needed parameters
+- env: environment to run in
+- org: 
+- pid: ssn or orgNo
+- scopes:
+2. Search
+- ssn
+- resource
+- token
 ### Search messages, graphQL
     
 ## Run locally

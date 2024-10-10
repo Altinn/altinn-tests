@@ -3,10 +3,13 @@ import { check } from 'k6';
 import encoding from 'k6/encoding';
 import { fail } from 'k6';
 
-export function generateToken(userName, userPwd, queryParams) {
+export function generateToken(tokenFor = 'personal', userName, userPwd, queryParams) {
   const credentials = `${userName}:${userPwd}`;
   const encodedCredentials = encoding.b64encode(credentials);
-  var endpoint = 'https://altinn-testtools-token-generator.azurewebsites.net/api/GetPersonalToken';
+  var endpoint;
+  if (tokenFor === 'enterprise') endpoint = 'https://altinn-testtools-token-generator.azurewebsites.net/api/GetEnterpriseToken';
+  if (tokenFor === 'personal') endpoint = 'https://altinn-testtools-token-generator.azurewebsites.net/api/GetPersonalToken';
+  if (tokenFor === 'platform') endpoint = 'https://altinn-testtools-token-generator.azurewebsites.net/api/GetPlatformToken';
   endpoint += buildQueryParametersForEndpoint(queryParams);
   var params = {
     headers: {
@@ -19,20 +22,6 @@ export function generateToken(userName, userPwd, queryParams) {
   token = token.body;
   return token;
 }
-
-export function generateMaskinPortenToken(token, env) {
-    var endpoint = `https://platform.${env}.altinn.no/authentication/api/v1/exchange/maskinporten`;
-    var params = {
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    };
-  
-    var mp_token = http.get(endpoint, params);
-    if (mp_token.status != 200) stopIterationOnFail('token gen failed', false, mp_token);
-    token = mp_token.body;
-    return token;
-  }
 
 export function buildQueryParametersForEndpoint(filterParameters) {
     var query = '?';
