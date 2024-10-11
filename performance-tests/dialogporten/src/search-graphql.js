@@ -3,15 +3,16 @@ import papaparse from 'https://jslib.k6.io/papaparse/5.1.1/index.js';
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import { SharedArray } from 'k6/data';
 import {buildQueryParametersForEndpoint} from '../../generate-tokens/src/token-generator.js';
+import { getBaseUrl } from '../../config/config.js';
 
-const env = __ENV.env;
-const filepath = `../data/.tmp/data-with-tokens-${env}.csv`;
+const environment = __ENV.env;
+const filepath = `../data/.tmp/data-with-tokens-${environment}.csv`;
 
 const idKeys = new SharedArray('idKeys', function () {
   return papaparse.parse(open(filepath), { header: true }).data;
 });
 
-const baseUrl = `https://platform.${env}.altinn.no/dialogporten/api/v1/enduser/dialogs`
+const baseUrl = `${getBaseUrl(environment)}dialogporten/api/v1/enduser/dialogs`;
 
 export const options = {
   //discardResponseBodies: true,

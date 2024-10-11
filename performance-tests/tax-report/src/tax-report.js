@@ -64,6 +64,7 @@ export function submit_tax(data, id) {
     
     // 1. Create instance
     var instance_resp = create_instance(data, id);
+    console.log(instance_resp.status_text);
     if (instance_resp.status != 201) return;
     
     // 2. Uplod tax report
@@ -109,6 +110,7 @@ export function create_instance(data, id) {
   };
 
   var request_body = JSON.stringify(instance)
+  console.log(endPoint);
   return http.post(endPoint, request_body, params);
 }
 

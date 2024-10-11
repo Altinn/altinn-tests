@@ -1,16 +1,14 @@
 # Load test for dialogporten
-Load test for t3search, does the following, divided in two separate steps
+Load test for t3search, does the following, divided in two separate steps. Under construction...
 
 ## Tests
 ### Create dialog
-1. Generate maskinporten token
-Needed parameters:
+1. Generate maskinporten token, using parameters:
 - env: environment to run in: yt01 | at21 ...
 - org: organisation that sends the dialog, text string
 - orgNo: Organisation number (9 digits)
 - scopes: digdir:dialogporten.serviceprovider
-2. Create dialog
-Needed parameters:
+2. Create dialog, using parameters:
 - token from 1.
 - ssn: personnummer (11 digits)
 - resource: super-simple-service
@@ -19,12 +17,11 @@ Needed parameters:
 1. Create token for user
 Needed parameters
 - env: environment to run in
-- org: 
+- org: organisation that sent the dialog
 - pid: ssn or orgNo
-- scopes:
-2. Search
-- ssn
-- resource
+- scopes: digdir:dialogporten
+2. Search, using parameters
+- ServiceResource: Query parameter, value urn:altinn:resource:super-simple-service (same as for create dialog resource)
 - token
 ### Search messages, graphQL
     
@@ -38,8 +35,9 @@ Needed parameters
 git clone <this repo>
 cd altinn-test/performance-tests/dialogporten/src
 xk6 build v0.46.0 --with github.com/avitalique/xk6-file@latest
-./k6 run -e env=<> -e tokengenuser=<> -e tokengenuserpwd=<> ./generate-maskinporten-tokens.js
-k6 run create-dialog.js -e env=<>  
+./k6 run -e env=<> -e tokengenuser=<> -e tokengenuserpwd=<> ./generate-tokens.js
+k6 run create-dialog.js -e env=<>
+k6 run search-enduser.js -e env=<>  
 ```
 ## Github actions
 ### On push

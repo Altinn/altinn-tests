@@ -3,7 +3,7 @@ import { check } from 'k6';
 import encoding from 'k6/encoding';
 import { fail } from 'k6';
 
-export function generateToken(tokenFor = 'personal', userName, userPwd, queryParams) {
+export function generateToken(tokenFor, userName, userPwd, queryParams) {
   const credentials = `${userName}:${userPwd}`;
   const encodedCredentials = encoding.b64encode(credentials);
   var endpoint;

@@ -2,9 +2,10 @@ import http from 'k6/http';
 import papaparse from 'https://jslib.k6.io/papaparse/5.1.1/index.js';
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import { SharedArray } from 'k6/data';
+import { getBaseUrl } from '../../config/config.js';
 
 const environment = __ENV.env.toLowerCase();
-const baseUrl = `https://platform.${environment}.altinn.no/dialogporten/api/v1/serviceowner/dialogs`
+const uri = `${getBaseUrl(environment)}dialogporten/api/v1/serviceowner/dialogs`
 const filepath = `../data/.tmp/data-with-tokens-${environment}.csv`;
 
 const message = JSON.parse(open('../data/dialog.json'));
@@ -29,7 +30,6 @@ export default function() {
 }
 
 export function create_dialog(id) {
-    var endPoint = baseUrl
     var params = {
       headers: {
         Authorization: 'Bearer ' + id.mptoken,
@@ -39,6 +39,7 @@ export function create_dialog(id) {
     };
     message.serviceResource = `urn:altinn:resource:${id.resource}`;
     message.party = `urn:altinn:person:identifier-no:${id.ssn}`;
-    http.post(endPoint, JSON.stringify(message), params);
+    var resp = http.post(uri, JSON.stringify(message), params);
+    console.log(resp.status_text)
 }
   

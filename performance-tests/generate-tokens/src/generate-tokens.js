@@ -30,7 +30,7 @@ export default function() {
       pid: idKey.ssn,
       ttl: ttl
     };
-    var token = generateToken(tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
+    var token = generateToken('personal', tokenGeneratorUserName, tokenGeneratorUserPwd, tokenGenParams);
     file.appendString(filepath, `\n${idKey.userid},${idKey.partyid},${idKey.ssn},${token}`);
     count += 1;
     if (count >= limit && limit > 0) break;
