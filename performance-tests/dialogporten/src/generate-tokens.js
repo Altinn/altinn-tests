@@ -15,6 +15,9 @@ const idKeys = papaparse.parse(open(data_file), { header: true }).data;
 
 export const options = { 
   vus: 1,
+  thresholds: {
+    http_req_failed: ['rate<=0.0'],
+  },
 };
 
 export default function() {
