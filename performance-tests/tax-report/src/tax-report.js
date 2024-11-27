@@ -8,7 +8,7 @@ import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporte
 
 const taxXml = open('tax.xml', 'b');
 const idKeys = new SharedArray('idKeys', function () {
-  return papaparse.parse(open('data-with-tokens.csv'), { header: true }).data;
+  return papaparse.parse(open('.data-with-tokens.csv'), { header: true }).data;
 });
 
 export const options = {
