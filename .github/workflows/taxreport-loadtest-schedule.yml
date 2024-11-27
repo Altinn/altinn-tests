@@ -13,25 +13,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup go  
-        uses: actions/setup-go@v5
-        with:
-          go-version: 'stable'
-
-      - name: Install xk6
-        run: go install go.k6.io/xk6/cmd/xk6@latest
-
-      - name: Build xk6-counter binary
+      - name: Generate tokens
         working-directory: ./performance-tests/tax-report/src
-        run: xk6 build --with github.com/avitalique/xk6-file@latest
-
-      - name: Run k6 to generate tokens
-        working-directory: ./performance-tests/tax-report/src
-        run: ./k6 run ../../generate-tokens/src/generate-tokens.js
+        run: ../../generate-tokens/src/generate-tokens.sh ../../generate-tokens/src 0
         env:
-          env: ${{ secrets.YTENVIRONMENT }}
-          tokengenuser: ${{ secrets.TOKENGENUSER }}
-          tokengenuserpwd: ${{ secrets.TOKENGENPWD }}
+          API_ENVIRONMENT: ${{ secrets.YTENVIRONMENT }}
+          TOKEN_GENERATOR_USERNAME: ${{ secrets.TOKENGENUSER }}
+          TOKEN_GENERATOR_PASSWORD: ${{ secrets.TOKENGENPWD }}
 
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
