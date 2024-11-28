@@ -64,6 +64,7 @@ export function submit_tax(data, id) {
     
     // 1. Create instance
     var instance_resp = create_instance(data, id);
+    console.log(instance_resp.body);
     if (instance_resp.status != 201) return;
     
     // 2. Uplod tax report

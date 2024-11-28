@@ -34,6 +34,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Generate tokens (Linux/Mac)
+        if: runner.os != 'Windows'
+        working-directory: ./performance-tests/tax-report/src
+        run: ../../generate-tokens/src/generate-tokens.sh ../../generate-tokens/src ${{ inputs.limit }}
+        env:
+          API_ENVIRONMENT: ${{ secrets.YTENVIRONMENT }}
+          TOKEN_GENERATOR_USERNAME: ${{ secrets.TOKENGENUSER }}
+          TOKEN_GENERATOR_PASSWORD: ${{ secrets.TOKENGENPWD }}
+
+      - name: Generate tokens (Windows)
+        if: runner.os == 'Windows'
+        working-directory: ./performance-tests/tax-report/src
+        run: pwsh ../../generate-tokens/src/generate-tokens.ps1 `
+             -testdatafilepath ../../generate-tokens/src `
+             -limit ${{ inputs.limit }} `
+             -API_ENVIRONMENT ${{ secrets.YTENVIRONMENT }} `
+             -TOKEN_GENERATOR_USERNAME ${{ secrets.TOKENGENUSER }} `
+             -TOKEN_GENERATOR_PASSWORD ${{ secrets.TOKENGENPWD }}
+        env:
+          API_ENVIRONMENT: ${{ secrets.YTENVIRONMENT }}
+          TOKEN_GENERATOR_USERNAME: ${{ secrets.TOKENGENUSER }}
+          TOKEN_GENERATOR_PASSWORD: ${{ secrets.TOKENGENPWD }}
+
+
       - name: Generate tokens
         working-directory: ./performance-tests/tax-report/src
         run: ../../generate-tokens/src/generate-tokens.sh ../../generate-tokens/src ${{ inputs.limit }}
