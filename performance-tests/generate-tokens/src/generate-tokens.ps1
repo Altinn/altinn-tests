@@ -69,8 +69,8 @@ Import-Csv -Path $enduser_datafile | ForEach-Object {
     $ssn = $_.ssn
 
     $url = "https://altinn-testtools-token-generator.azurewebsites.net/api/GetPersonalToken?env=$env&userId=$userId&partyId=$partyId&pid=$ssn&ttl=3600"
-    $token = Invoke-RestMethod -Uri $url -Method Get -Credential (New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $tokengenuser, (ConvertTo-SecureString -String $tokengenpasswd -AsPlainText -Force))
-    #$token = Invoke-RestMethod -Uri $url -Headers @{Authorization=("Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${tokengenuser}:${tokengenpasswd}")))} -Method Get
+    #$token = Invoke-RestMethod -Uri $url -Method Get -Credential (New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $tokengenuser, (ConvertTo-SecureString -String $tokengenpasswd -AsPlainText -Force))
+    $token = Invoke-RestMethod -Uri $url -Headers @{Authorization=("Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("${tokengenuser}:${tokengenpasswd}")))} -Method Get
     if (-not $?) {
         Write-Host "Error: Failed to generate personal token for: $ssn, $scopes"
         continue
