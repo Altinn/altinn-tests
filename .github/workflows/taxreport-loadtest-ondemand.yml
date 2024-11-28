@@ -25,8 +25,8 @@ on:
         default: "'ubuntu-latest'"
         options:
           - "'ubuntu-latest'"
-          - "['self-hosted', 'macOS', 'X64']"
-          - "['self-hosted', 'X64', 'Windows']"
+          - "'windows-latest'"
+          - "'macOS-latest'"
 
 jobs:
   run-taxreport-ondemand:
@@ -58,15 +58,6 @@ jobs:
           TOKEN_GENERATOR_USERNAME: ${{ secrets.TOKENGENUSER }}
           TOKEN_GENERATOR_PASSWORD: ${{ secrets.TOKENGENPWD }}
 
-
-      - name: Generate tokens
-        working-directory: ./performance-tests/tax-report/src
-        run: ../../generate-tokens/src/generate-tokens.sh ../../generate-tokens/src ${{ inputs.limit }}
-        env:
-          API_ENVIRONMENT: ${{ secrets.YTENVIRONMENT }}
-          TOKEN_GENERATOR_USERNAME: ${{ secrets.TOKENGENUSER }}
-          TOKEN_GENERATOR_PASSWORD: ${{ secrets.TOKENGENPWD }}
-
       - name: Setup K6
         uses: grafana/setup-k6-action@v1
 
@@ -78,8 +69,8 @@ jobs:
         env:
           K6_WEB_DASHBOARD: true 
           K6_WEB_DASHBOARD_EXPORT: html-report.html
-          K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
-          K6_CLOUD_PROJECT_ID: ${{ secrets.K6_CLOUD_PROJECT_ID }}
+          #K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
+          #K6_CLOUD_PROJECT_ID: ${{ secrets.K6_CLOUD_PROJECT_ID }}
           serviceowner: ${{ secrets.OWNER }}
 
       - name: Upload summary html report
