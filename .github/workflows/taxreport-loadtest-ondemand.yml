@@ -26,6 +26,7 @@ on:
         options:
           - "'ubuntu-latest'"
           - "['self-hosted', 'macOS', 'X64']"
+          - "['self-hosted', 'X64', 'Windows']"
 
 jobs:
   run-taxreport-ondemand:
