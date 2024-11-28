@@ -30,8 +30,8 @@ function Usage {
 #    Usage
 #}
 
-$tokengenuser = $env:TOKEN_GENERATOR_USERNAME
-$tokengenpasswd = $env:TOKEN_GENERATOR_PASSWORD
+$tokengenuser = $TOKEN_GENERATOR_USERNAME
+$tokengenpasswd = $TOKEN_GENERATOR_PASSWORD
 
 $env = ""
 switch ($API_ENVIRONMENT) {
