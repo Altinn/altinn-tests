@@ -16,7 +16,7 @@
     "url": "https://tfs.ai-dev.brreg.no/Altinn/Altinn/_git/AutomatedPortalTest"
   },
   "devDependencies": {
-    "cypress": "^8.4.1",
+    "cypress": "^14.0.0",
     "cypress-file-upload": "^5.0.8",
     "cypress-parallel": "^0.5.0",
     "eslint": "^7.32.0",
