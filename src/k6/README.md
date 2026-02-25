@@ -1,3 +1,0 @@
-# Altinn 2 K6 tests
-
-...
