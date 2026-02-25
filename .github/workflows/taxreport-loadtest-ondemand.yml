@@ -74,20 +74,20 @@ jobs:
           serviceowner: ${{ secrets.OWNER }}
 
       - name: Upload summary html report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: summary-html
           path: summary.html
       - name: Upload extended html report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: extended-html
           path: html-report.html
 
       - name: Upload summary text report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: summary-txt
