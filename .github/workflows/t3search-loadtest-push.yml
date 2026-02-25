@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup go  
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
           go-version: 'stable'
 
@@ -37,10 +37,10 @@ jobs:
           limit: 1
 
       - name: Setup K6
-        uses: grafana/setup-k6-action@v1
+        uses: grafana/setup-k6-action@ffe7d7290dfa715e48c2ccc924d068444c94bde2 # v1
 
       - name: Run local k6 test
-        uses: grafana/run-k6-action@v1  
+        uses: grafana/run-k6-action@a15e2072ede004e8d46141e33d7f7dad8ad08d9d # v1  
         with: 
           path: performance-tests/t3search/src/t3search.js
           flags: --vus=1 --iterations=1

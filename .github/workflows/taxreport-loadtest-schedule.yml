@@ -11,7 +11,7 @@ jobs:
     #runs-on: ['self-hosted', 'Windows', 'X64']
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Generate tokens
         working-directory: ./performance-tests/tax-report/src
@@ -22,10 +22,10 @@ jobs:
           TOKEN_GENERATOR_PASSWORD: ${{ secrets.TOKENGENPWD }}
 
       - name: Setup K6
-        uses: grafana/setup-k6-action@v1
+        uses: grafana/setup-k6-action@ffe7d7290dfa715e48c2ccc924d068444c94bde2 # v1
 
       - name: Run local k6 test
-        uses: grafana/run-k6-action@v1  
+        uses: grafana/run-k6-action@a15e2072ede004e8d46141e33d7f7dad8ad08d9d # v1  
         with: 
           path: performance-tests/tax-report/src/tax-report.js
           flags: --vus=40 --duration=10m
@@ -35,20 +35,20 @@ jobs:
           serviceowner: ${{ secrets.OWNER }}
 
       - name: Upload summary html report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: summary-html
           path: summary.html
       - name: Upload extended html report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: extended-html
           path: html-report.html
 
       - name: Upload summary text report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: summary-txt

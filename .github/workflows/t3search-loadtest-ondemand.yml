@@ -32,10 +32,10 @@ jobs:
     runs-on: ${{ fromJSON(inputs.select-runner) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup go  
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
           go-version: 'stable'
 
@@ -56,10 +56,10 @@ jobs:
           limit: ${{ inputs.limit }}
 
       - name: Setup K6
-        uses: grafana/setup-k6-action@v1
+        uses: grafana/setup-k6-action@ffe7d7290dfa715e48c2ccc924d068444c94bde2 # v1
 
       - name: Run local k6 test
-        uses: grafana/run-k6-action@v1  
+        uses: grafana/run-k6-action@a15e2072ede004e8d46141e33d7f7dad8ad08d9d # v1  
         with: 
           path: performance-tests/t3search/src/t3search.js
           flags: --vus=${{ inputs.vus }} --duration=${{ inputs.duration }}
@@ -69,20 +69,20 @@ jobs:
           subscription_key: ${{ secrets.SUBSCRIPTION_KEY }}
 
       - name: Upload summary html report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: summary-html
           path: summary.html
       - name: Upload extended html report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: extended-html
           path: html-report.html
 
       - name: Upload summary text report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: summary-txt
